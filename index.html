@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Telefon Victimă - Messenger</title>
+  <!-- Include FontAwesome pentru iconițe -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="phone">
+    <!-- Status Bar -->
+    <div class="status-bar">
+      <span id="statusTime">9:41</span>
+      <span>📶 4G</span>
+      <span>84% 🔋</span>
+    </div>
+
+    <!-- Ecranul principal -->
+    <div class="screen">
+      <div class="time">
+        <div id="clock"></div>
+        <div id="date"></div>
+      </div>
+
+      <!-- Aplicații (stil iOS cu iconițe) -->
+      <div class="apps">
+        <div class="app" onclick="openApp('messenger')">
+          <i class="fab fa-facebook-messenger"></i>
+          <span>Messenger</span>
+        </div>
+        <div class="app" onclick="openApp('messages')">
+          <i class="fas fa-comment-alt"></i>
+          <span>Mesaje</span>
+        </div>
+        <div class="app" onclick="openApp('gallery')">
+          <i class="fas fa-image"></i>
+          <span>Galerie</span>
+        </div>
+        <div class="app" onclick="openApp('notes')">
+          <i class="fas fa-sticky-note"></i>
+          <span>Notițe</span>
+        </div>
+        <div class="app" onclick="openApp('calls')">
+          <i class="fas fa-phone"></i>
+          <span>Apeluri</span>
+        </div>
+        <div class="app locked-app" onclick="showPasswordPrompt()">
+          <i class="fas fa-lock"></i>
+          <span>Secret</span>
+        </div>
+        <div class="app" onclick="openApp('labyrinth')">
+          <i class="fas fa-gamepad"></i>
+          <span>Labirint</span>
+        </div>
+      </div>
+
+      <!-- Modale -->
+
+      <!-- 1. Modal Messenger -->
+      <div id="messenger" class="modal">
+        <div class="messenger-container">
+          <!-- Header Messenger cu iconița oficială și buton de back -->
+          <div class="chat-header">
+            <button class="back-btn" onclick="closeApp()">←</button>
+            <i class="fab fa-facebook-messenger"></i>
+            <h2>Messenger</h2>
+          </div>
+          <div class="chat-list">
+            <!-- Contact: Ana Popescu -->
+            <div class="chat-item" onclick="openChat('ana')">
+              <img src="https://i.pravatar.cc/50?img=1" alt="Ana Popescu">
+              <div class="chat-info">
+                <h3>Ana Popescu <span class="online-status"></span></h3>
+                <p>Ultimul mesaj: Ai primit informațiile?</p>
+              </div>
+            </div>
+            <!-- Contact: Mihai Ionescu -->
+            <div class="chat-item" onclick="openChat('mihai')">
+              <img src="https://i.pravatar.cc/50?img=5" alt="Mihai Ionescu">
+              <div class="chat-info">
+                <h3>Mihai Ionescu</h3>
+                <p>Codul este în siguranță...</p>
+              </div>
+            </div>
+            <!-- Contact: Elena Vasile -->
+            <div class="chat-item" onclick="openChat('elena')">
+              <img src="https://i.pravatar.cc/50?img=7" alt="Elena Vasile">
+              <div class="chat-info">
+                <h3>Elena Vasile <span class="online-status"></span></h3>
+                <p>Trebuie să vorbim urgent!</p>
+              </div>
+            </div>
+          </div>
+          <!-- Ferestre de conversație 1-la-1 -->
+          <div id="ana-chat" class="conversation-window">
+            <div class="chat-header">
+              <button class="back-btn" onclick="closeChat()">←</button>
+              <img src="https://i.pravatar.cc/50?img=1" alt="Ana Popescu">
+              <div>
+                <h3>Ana Popescu</h3>
+                <p style="color:#0084ff;">Online</p>
+              </div>
+            </div>
+            <div class="message-container">
+              <!-- Mesajele se vor popula dinamic -->
+            </div>
+            <div class="message-input">
+              <input type="text" placeholder="Scrie un mesaj..." id="ana-input">
+              <button onclick="sendMessage('ana')"><i class="fas fa-paper-plane"></i></button>
+            </div>
+          </div>
+          <div id="mihai-chat" class="conversation-window">
+            <div class="chat-header">
+              <button class="back-btn" onclick="closeChat()">←</button>
+              <img src="https://i.pravatar.cc/50?img=5" alt="Mihai Ionescu">
+              <div>
+                <h3>Mihai Ionescu</h3>
+                <p style="color:#888;">Offline</p>
+              </div>
+            </div>
+            <div class="message-container">
+              <!-- Mesajele se vor popula dinamic -->
+            </div>
+            <div class="message-input">
+              <input type="text" placeholder="Scrie un mesaj..." id="mihai-input">
+              <button onclick="sendMessage('mihai')"><i class="fas fa-paper-plane"></i></button>
+            </div>
+          </div>
+          <div id="elena-chat" class="conversation-window">
+            <div class="chat-header">
+              <button class="back-btn" onclick="closeChat()">←</button>
+              <img src="https://i.pravatar.cc/50?img=7" alt="Elena Vasile">
+              <div>
+                <h3>Elena Vasile</h3>
+                <p style="color:#0084ff;">Online</p>
+              </div>
+            </div>
+            <div class="message-container">
+              <!-- Mesajele se vor popula dinamic -->
+            </div>
+            <div class="message-input">
+              <input type="text" placeholder="Scrie un mesaj..." id="elena-input">
+              <button onclick="sendMessage('elena')"><i class="fas fa-paper-plane"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Modal Mesaje -->
+      <div id="messages" class="modal">
+        <div class="modal-content">
+          <button class="close-btn" onclick="closeApp()">✕</button>
+          <h2>💬 Mesaje</h2>
+          <div class="message">
+            <p><strong>Ana (23:00):</strong> "Vin cu informațiile, stai în cameră!" 🔍</p>
+            <small>Citit • 23:01</small>
+          </div>
+          <div class="message">
+            <p><strong>Elena (22:45):</strong> "Renunță la investigație sau vei regreta!" ⚠️</p>
+            <small>Citit • 22:46</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Modal Galerie -->
+      <div id="gallery" class="modal">
+        <div class="modal-content">
+          <button class="close-btn" onclick="closeApp()">✕</button>
+          <h2>📸 Galerie</h2>
+          <div class="gallery-grid">
+            <div class="photo" style="background-image: url('https://picsum.photos/301')"></div>
+            <div class="photo" style="background-image: url('https://picsum.photos/302')"></div>
+            <div class="photo" style="background-image: url('https://picsum.photos/303')"></div>
+            <div class="photo" style="background-image: url('https://picsum.photos/304')"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Modal Notițe -->
+      <div id="notes" class="modal">
+        <div class="modal-content">
+          <button class="close-btn" onclick="closeApp()">✕</button>
+          <h2>📝 Notițe</h2>
+          <div class="message">
+            <p><strong>10 noiembrie:</strong> "Elena are documente ascunse în seif - cod 4587?"</p>
+          </div>
+          <div class="message">
+            <p><strong>12 noiembrie:</strong> "Dacă pățesc ceva, verifică camera 105!" 🔑</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Modal Apeluri -->
+      <div id="calls" class="modal">
+        <div class="modal-content">
+          <button class="close-btn" onclick="closeApp()">✕</button>
+          <h2>📞 Apeluri</h2>
+          <div class="call-entry">
+            <div>
+              <strong>Ana Popescu</strong>
+              <div>12 noiembrie, 23:05 ↗️</div>
+            </div>
+            <div>2:15</div>
+          </div>
+          <div class="call-entry">
+            <div>
+              <strong>Mihai Tudor</strong>
+              <div>12 noiembrie, 22:30 ↗️</div>
+            </div>
+            <div>1:45</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Modal Zoom Galerie -->
+      <div class="zoomed-photo" onclick="closeZoom()">
+        <img id="zoomedImg" src="" alt="Zoomed Photo">
+      </div>
+
+      <!-- 7. Modal Joc Secret (aspect creepy) -->
+      <div id="gameModal" class="modal">
+        <div class="modal-content">
+          <div id="passwordPrompt">
+            <button class="close-btn" onclick="closeGame()">✕</button>
+            <h3>🔐 Intră în tărâmul secret...</h3>
+            <input type="password" id="passwordInput" placeholder="Introdu parola">
+            <div class="game-controls">
+              <button onclick="checkPassword()">Deschide Portalul</button>
+            </div>
+          </div>
+          <div id="gameContent" style="display:none;">
+            <button class="close-btn" onclick="closeGame()">✕</button>
+            <h3>🎮 Combinație misterioasă</h3>
+            <div id="numberDisplay">_ _ _ _</div>
+            <div class="game-controls">
+              <input type="number" id="numberInput" min="0" max="9" placeholder="0-9">
+              <button onclick="checkNumber()">Verifică</button>
+            </div>
+            <button class="back-btn" onclick="showPasswordPrompt()">← Înapoi</button>
+            <p id="gameResult"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. Modal Labirint (Mini Joc) -->
+      <div id="labyrinth" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeApp()">✕</button>
+            <h2 style="text-align:center;">Labirintul Secret</h2>
+            <canvas id="labyrinthCanvas" width="400" height="400"></canvas>
+            <div class="game-controls labyrinth-controls">
+                <button class="arrow-btn up" onclick="movePlayer('up')">↑</button>
+                <button class="arrow-btn left" onclick="movePlayer('left')">←</button>
+                <button class="arrow-btn down" onclick="movePlayer('down')">↓</button>
+                <button class="arrow-btn right" onclick="movePlayer('right')">→</button>
+            </div>
+            <p id="labyrinthMessage" style="text-align:center; margin-top:10px; font-weight:bold;"></p>
+        </div>
+    </div>
+      </div>
+
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
